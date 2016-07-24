@@ -1,0 +1,48 @@
+<!doctype html>
+<title>murmur hash 128</title>
+<meta charset=utf-8>
+<script src=murmurhas3_128.js></script>
+<script>
+window.onload = () => {
+  let xhr = new XMLHttpRequest();
+  xhr.onload = () => {
+    /* */
+    let uint8Array = new Uint8Array(xhr.response);
+    let t = performance.now();
+    let hash = MurmurHash3_128.hash(uint8Array);
+    let time = performance.now() - t;
+    let kb = uint8Array.length / 0x400 | 0;
+    console.log(`${kb}KB in ${time.toFixed(2)} milliseconds, that is ${kb / time | 0}KB per millisecond`)
+    console.log(hash);
+    return
+    /* *
+    let lines = xhr.responseText.split(/\r?\n/).filter(Boolean);
+    let t = performance.now();
+    let map = new Map();
+    lines.forEach(line => {
+      let hash = MurmurHash3_128.hash(line);
+      if (map.has(hash)) {
+        let arr = map.get(hash);
+        if (line !== arr[0]) {
+          arr.push(line);
+          console.log(arr);
+        }
+      } else {
+        map.set(hash, [line]);
+      }
+
+    });
+    console.log(lines.length, (performance.now() - t).toFixed(2))
+    /* */
+  };
+  
+  /* */
+  xhr.open('GET', 'test.jpg');
+  xhr.responseType = 'arraybuffer';
+  /* *
+  xhr.open('GET', 'de-CH.dic');
+  /* */
+  xhr.send();
+}
+
+</script>
