@@ -33,17 +33,18 @@ class MurmurHash3_128 {
     // body
 
     for (let i = 0; i < blockCounts; i++) {
-      let k1 = dataUint32[i * 4 + 0];
-      let k2 = dataUint32[i * 4 + 1];
-      let k3 = dataUint32[i * 4 + 2];
-      let k4 = dataUint32[i * 4 + 3];
+      let index = i * 4;
+      let k1 = dataUint32[index++];
+      let k2 = dataUint32[index++];
+      let k3 = dataUint32[index++];
+      let k4 = dataUint32[index++];
 
       k1 = this.multiply32(k1, c1);
       k1 = this.rotateLeft32(k1, 15);
       k1 = this.multiply32(k1, c2);
       h1 ^= k1;
       h1 = this.rotateLeft32(h1, 19);
-      h1 += h2;
+      h1 = (h1 + h2) | 0;
       h1 = (h1 * 5 + 0x561ccd1b) | 0;
 
       k2 = this.multiply32(k2, c2);
@@ -51,7 +52,7 @@ class MurmurHash3_128 {
       k2 = this.multiply32(k2, c3);
       h2 ^= k2;
       h2 = this.rotateLeft32(h2, 17);
-      h2 += h3;
+      h2 = (h2 + h3) | 0;
       h2 = (h2 * 5 + 0x0bcaa747) | 0;
 
       k3 = this.multiply32(k3, c3);
@@ -59,7 +60,7 @@ class MurmurHash3_128 {
       k3 = this.multiply32(k3, c4);
       h3 ^= k3;
       h3 = this.rotateLeft32(h3, 15);
-      h3 += h4;
+      h3 = (h3 + h4) | 0;
       h3 = (h3 * 5 + 0x96cd1c35) | 0;
 
       k4 = this.multiply32(k4, c4);
@@ -67,7 +68,7 @@ class MurmurHash3_128 {
       k4 = this.multiply32(k4, c1);
       h4 ^= k4;
       h4 = this.rotateLeft32(h4, 13);
-      h4 += h1;
+      h4 = (h4 + h1) | 0;
       h4 = (h4 * 5 + 0x32ac3b17) | 0;
     }
 
@@ -142,24 +143,24 @@ class MurmurHash3_128 {
     h3 ^= length;
     h4 ^= length;
 
-    h1 += h2;
-    h1 += h3;
-    h1 += h4;
-    h2 += h1;
-    h3 += h1;
-    h4 += h1;
+    h1 = (h1 + h2) | 0;
+    h1 = (h1 + h3) | 0;
+    h1 = (h1 + h4) | 0;
+    h2 = (h2 + h1) | 0;
+    h3 = (h3 + h1) | 0;
+    h4 = (h4 + h1) | 0;
 
     h1 = this.finalMix32(h1);
     h2 = this.finalMix32(h2);
     h3 = this.finalMix32(h3);
     h4 = this.finalMix32(h4);
 
-    h1 += h2;
-    h1 += h3;
-    h1 += h4;
-    h2 += h1;
-    h3 += h1;
-    h4 += h1;
+    h1 = (h1 + h2) | 0;
+    h1 = (h1 + h3) | 0;
+    h1 = (h1 + h4) | 0;
+    h2 = (h2 + h1) | 0;
+    h3 = (h3 + h1) | 0;
+    h4 = (h4 + h1) | 0;
 
     return this.toHex8(h1) + this.toHex8(h2) + this.toHex8(h3) +
         this.toHex8(h4);
