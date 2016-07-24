@@ -166,6 +166,8 @@ class MurmurHash3_128 {
   }
 
   static multiply32(a, b) {
+    a |= 0;
+    b |= 0;
     return (a * b & 0xffff0000) | (a * (b & 0xffff) & 0xffff);
   }
 
