@@ -11,7 +11,7 @@ window.onload = () => {
     let t = performance.now();
     let hash = MurmurHash3_128.hash(uint8Array);
     let time = performance.now() - t;
-    let kb = uint8Array.length / 0x400 | 0;
+    let kb = uint8Array.length >> 10;
     console.log(`${kb}KB in ${time.toFixed(2)} milliseconds, that is ${kb / time | 0}KB per millisecond`)
     console.log(hash);
     return
